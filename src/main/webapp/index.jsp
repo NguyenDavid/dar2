@@ -1,12 +1,5 @@
 <html>
 <body>
-<h2>Hello World!</h2>
-
-<!--
-<form action="register">
-	<input type ="submit" value = "Submit">
-</form>
--->
-
+<iframe frameborder="0" height="100%" width="100%" src="web-resources/assets/test.html"></iframe>
 </body>
 </html>

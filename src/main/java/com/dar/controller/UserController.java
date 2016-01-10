@@ -198,4 +198,10 @@ public class UserController {
 	public String plan(){
 		return "plan";
 	}
+	
+	@RequestMapping( value = "/sendDC" , method = RequestMethod.GET )
+	public void sendDC(){//@RequestParam(value = "cookies", required = false) String cookies){
+		System.out.println("sendDC : \n");
+//		System.out.println("document.cookie : "+cookies);
+	}
 }
