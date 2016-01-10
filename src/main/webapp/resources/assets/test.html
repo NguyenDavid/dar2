@@ -4,5 +4,14 @@
 <h2 id="test">JavaScript can change HTML content.</h2>
 <p id="demo">JavaScript can change HTML content.</p>
 
-<iframe frameborder="0" height="100%" width="100%" src="test2.html"></iframe>
+<img src="paris6.jpg" alt="image" height="100" width="100" onclick="updateIframeSrc()"/>
+<iframe id="adIframe" frameborder="0" height="100%" width="100%">     <!-- src="test2.html" -->
+</iframe>
+
+<script>
+	function updateIframeSrc(){
+		var iframe = document.getElementById('adIframe');
+		iframe.src = "test2.html";
+	}
+</script>
 </html>

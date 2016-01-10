@@ -214,7 +214,7 @@ public class CafeController {
 			HttpServletRequest request){
 		if(contenu != null && nom !=null){
 			
-			//test safe commentaire
+			//safe commentaire
 			contenu = EscapeUtils.escapeHtml(contenu);
 			
 			Commentaire c = new Commentaire();
