@@ -1,0 +1,10 @@
+body
+{ font: normal 85% Arial, Helvetica, sans-serif;
+  background: #676767 url(../assets/background.jpg) repeat;
+  color: #000;
+}
+
+a[id="sss"]
+{
+color: blue;
+}
