@@ -9,7 +9,6 @@
 	<link rel="stylesheet" type="text/css" href='<c:url value="/web-resources/css/style.css"/>' />
 	<script type="text/javascript" src='<c:url value="/web-resources/js/jquery.min.js"/>'></script>
 	<script type="text/javascript" src='<c:url value="/web-resources/js/image_slide.js"/>'></script>
-	<script type="text/javascript" src='<c:url value="/web-resources/js/script.js"/>'></script>
 	<script type="text/javascript" src='<c:url value="/web-resources/js/login.js"/>'></script>
 	<script type="text/javascript" src='<c:url value="/web-resources/js/meteo2.js"/>'></script>
 
