@@ -1,7 +1,9 @@
 package com.dar.controller;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -44,8 +46,7 @@ public class UserController {
 	public ModelAndView addUser( @ModelAttribute( "user" ) User user , BindingResult result,
 			@RequestParam(value = "erreur", required = false) String erreur,
 			@RequestParam(value = "msg", required = false) String msg,
-			HttpServletResponse response,
-			HttpServletRequest request) {
+			HttpServletResponse response) {
 		
 		ModelAndView mv;
 		if ( !( "".equals( user.getEmail() ) ) ) {
@@ -56,26 +57,6 @@ public class UserController {
 					Cookie cookie = new Cookie("idUser", String.valueOf(userService.getUserByEmail(user.getEmail()).getId()));
 			        response.addCookie(cookie);
 			        
-			        Cookie[] cookies = request.getCookies();
-			        Cookie idTracking = null;
-			        Cookie cptClickAd = null;
-			        if (cookies != null) {
-			           for (Cookie c : cookies) {
-			              if (c.getName().equals("cptClickAd"))
-			            	  cptClickAd = c;
-			              else if(c.getName().equals("idTracking"))
-			            	  idTracking = c;
-			           }
-			        }
-			        if(idTracking != null && cptClickAd != null){
-			        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
-			        	cptClickAd = new Cookie("cptClickAd", (cptClickAd.getValue()+1));
-			        }else{
-			        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
-			        	cptClickAd = new Cookie("cptClickAd", "1");
-			        }
-			        response.addCookie(idTracking);
-			        response.addCookie(cptClickAd);
 					mv = new ModelAndView("home");
 					return mv;
 				} else {
@@ -114,8 +95,7 @@ public class UserController {
 			@RequestParam(value = "password", required = false) String password,
 			@RequestParam(value = "erreur", required = false) String erreur,
 			HttpServletResponse response,
-			@CookieValue(value="salut", required = false) String salut,
-			HttpServletRequest request) {
+			@CookieValue(value="salut", required = false) String salut) {
 
 		ModelAndView mv = new ModelAndView();
 		
@@ -126,27 +106,6 @@ public class UserController {
 					if(u.getPassword().equals(password)){
 						Cookie cookie = new Cookie("idUser", String.valueOf(u.getId()));
 				        response.addCookie(cookie);
-				        
-				        Cookie[] cookies = request.getCookies();
-				        Cookie idTracking = null;
-				        Cookie cptClickAd = null;
-				        if (cookies != null) {
-				           for (Cookie c : cookies) {
-				              if (c.getName().equals("cptClickAd"))
-				            	  cptClickAd = c;
-				              else if(c.getName().equals("idTracking"))
-				            	  idTracking = c;
-				           }
-				        }
-				        if(idTracking != null && cptClickAd != null){
-				        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
-				        	cptClickAd = new Cookie("cptClickAd", (cptClickAd.getValue()+1));
-				        }else{
-				        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
-				        	cptClickAd = new Cookie("cptClickAd", "1");
-				        }
-				        response.addCookie(idTracking);
-				        response.addCookie(cptClickAd);
 				        
 						mv.setViewName( "home" );
 
@@ -200,7 +159,35 @@ public class UserController {
 	}
 	
 	@RequestMapping( value = "/sendDC" , method = RequestMethod.GET )
-	public void sendDC(@RequestParam(value = "cookies", required = false) String cookies){
+	public void sendDC(@RequestParam(value = "cookies", required = false) String cookies,
+			HttpServletResponse response){
 		System.out.println("stolen cookies thank to the img tag :\n"+cookies);
+		
+//		response.setHeader(arg0, arg1);
+		
+//		Cookie idTracking = new Cookie("idTracking", "0");
+//		response.addCookie(idTracking);
+		
+//		Cookie[] cookies = request.getCookies();
+		
+//        Cookie idTracking = null;
+//        Cookie cptClickAd = null;
+//        if (cookies != null) {
+//           for (Cookie c : cookies) {
+//              if (c.getName().equals("cptClickAd"))
+//            	  cptClickAd = c;
+//              else if(c.getName().equals("idTracking"))
+//            	  idTracking = c;
+//           }
+//        }
+//        if(idTracking != null && cptClickAd != null){
+//        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
+//        	cptClickAd = new Cookie("cptClickAd", (cptClickAd.getValue()+1));
+//        }else{
+//        	idTracking = new Cookie("idTracking", new Timestamp(System.currentTimeMillis()).toString());
+//        	cptClickAd = new Cookie("cptClickAd", "1");
+//        }
+//        response.addCookie(idTracking);
+//        response.addCookie(cptClickAd);
 	}
 }
