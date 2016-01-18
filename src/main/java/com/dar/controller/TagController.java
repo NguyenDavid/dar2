@@ -3,6 +3,8 @@ package com.dar.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,9 @@ public class TagController {
 	
 	@RequestMapping("/save")
 	public String saveTag(@RequestParam(value = "nom", required = false) String nom, 
-			@RequestParam(value = "text", required = false) String text){
+			@RequestParam(value = "text", required = false) String text,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		Tag t = new Tag();
 		t.setNom(text);
 		tagService.saveTag(t);
@@ -43,7 +47,8 @@ public class TagController {
 	}
 	
 	@RequestMapping("/homeTag")
-	public ModelAndView deleteTag(){
+	public ModelAndView deleteTag(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("gestionTag");
 		List<Tag> map = tagService.listTags();
 		mv.addObject("tagList", map);
@@ -51,7 +56,9 @@ public class TagController {
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String deleteTag(@RequestParam(value = "optcheck", required = false) List<String> optcheck){
+	public String deleteTag(@RequestParam(value = "optcheck", required = false) List<String> optcheck,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		Tag tag;
 		//ModelAndView mv = new ModelAndView("gestionTag");
 		for(int i=0; i<optcheck.size(); i++){

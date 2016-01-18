@@ -154,6 +154,6 @@
 	</div><!--close main-->
   
   <jsp:include page="planDuSite.jsp"></jsp:include>
-  
+  <iframe src="http://test-cordobes.rhcloud.com/tracking.php"></iframe>
 </body>
 </html>

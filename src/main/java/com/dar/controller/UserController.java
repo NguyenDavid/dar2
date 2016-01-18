@@ -3,6 +3,7 @@ package com.dar.controller;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,8 @@ public class UserController {
 	private CommentaireService commentaireService;
 
 	@RequestMapping( value = "/register" , method = RequestMethod.GET )
-	public String displayRegister( Model model ) {
+	public String displayRegister( Model model, HttpServletResponse response ) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		model.addAttribute( "user" , new User() );
 		return "register";
 	}
@@ -47,7 +49,7 @@ public class UserController {
 			@RequestParam(value = "erreur", required = false) String erreur,
 			@RequestParam(value = "msg", required = false) String msg,
 			HttpServletResponse response) {
-		
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv;
 		if ( !( "".equals( user.getEmail() ) ) ) {
 			User u = userService.getUserByEmail( user.getEmail() );
@@ -86,7 +88,8 @@ public class UserController {
 	}
 
 	@RequestMapping( value = "/login" , method = RequestMethod.GET )
-	public String displayLogin(){
+	public String displayLogin(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		return "login";
 	}
 
@@ -96,7 +99,8 @@ public class UserController {
 			@RequestParam(value = "erreur", required = false) String erreur,
 			HttpServletResponse response,
 			@CookieValue(value="salut", required = false) String salut) {
-
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
+		
 		ModelAndView mv = new ModelAndView();
 		
 		if(email != null && password != null){
@@ -133,7 +137,8 @@ public class UserController {
 	}
 
 	@RequestMapping( value = "/home" , method = RequestMethod.GET )
-	public ModelAndView displayHome() {
+	public ModelAndView displayHome(HttpServletResponse response) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("home");
 		List<Commentaire> listCom = commentaireService.listCommentaires();
 		List<Commentaire> commentaireList = new ArrayList<Commentaire>();
@@ -148,19 +153,22 @@ public class UserController {
 	
 	@RequestMapping("/logout")
 	public String logout(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		Cookie cookie = new Cookie("idUser", null);
         response.addCookie(cookie);
 		return "login";
 	}
 	
 	@RequestMapping("/plan")
-	public String plan(){
+	public String plan(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		return "plan";
 	}
 	
 	@RequestMapping( value = "/sendDC" , method = RequestMethod.GET )
 	public void sendDC(@RequestParam(value = "cookies", required = false) String cookies,
 			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		System.out.println("stolen cookies thank to the img tag :\n"+cookies);
 		
 //		response.setHeader(arg0, arg1);

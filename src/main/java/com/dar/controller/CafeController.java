@@ -50,7 +50,8 @@ public class CafeController {
 	
 	
 	@RequestMapping("/homeCafe")
-	public ModelAndView homeCafe(){
+	public ModelAndView homeCafe(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("homeCafe");
 		List<Cafe> map = cafeService.listCafes();
 		mv.addObject("cafeList", map);
@@ -58,8 +59,8 @@ public class CafeController {
 	}
 	
 	@RequestMapping("/init")
-	public  String init(){
-		
+	public  String init(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		Cafe c1 = new Cafe("coco&zabrico", 1., 1., 2, "gdsfjhgdjy");
 		Cafe c2 = new Cafe("coralie et cappucine", 1., 1., 2, "gdsfjhgdjy");
 		Cafe c3 = new Cafe("moi moche et mechant", 1., 1., 2, "gdsfjhgdjy");
@@ -74,12 +75,14 @@ public class CafeController {
 	/***************************** AJOUT *******************************************/
 	
 	@RequestMapping("/testCamille")
-	public ModelAndView testCamille(){
+	public ModelAndView testCamille(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		return new ModelAndView("indexCamille");
 	}
 	
 	@RequestMapping("/initCafes")
-	public String initCafes(){
+	public String initCafes(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 //		String source = "http://parisdata.opendatasoft.com/api/records/1.0/search?dataset=liste-des-cafes-a-un-euro&q=nom_du_cafe=%22les%20montparnos%22";
 //		String source = "http://parisdata.opendatasoft.com/api/records/1.0/search?dataset=liste-des-cafes-a-un-euro";
 		String source = "http://parisdata.opendatasoft.com/api/records/1.0/search?dataset=liste-des-cafes-a-un-euro&rows=200";
@@ -147,13 +150,17 @@ public class CafeController {
 	}
 	
 	@RequestMapping("/askCafe")
-	public String askCafe(@RequestParam(value = "erreur", required = false) String erreur){
+	public String askCafe(@RequestParam(value = "erreur", required = false) String erreur,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		return "askCafe";
 	}
 	
 	@RequestMapping("/showCafe")
 	public ModelAndView showCafe(@RequestParam(value = "nombre", required = false) String nombre,
-			@RequestParam(value = "arrondissement", required = false) String arrondissement){
+			@RequestParam(value = "arrondissement", required = false) String arrondissement,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		if(!(nombre == null || arrondissement == null)){
 			if(nombre.matches("[0-9]+") && arrondissement.matches("[0-9]+")){
 				int nb = Integer.parseInt(nombre);
@@ -191,7 +198,11 @@ public class CafeController {
 	
 	@RequestMapping(value = "/showOneCafe", method = RequestMethod.GET)
 	public ModelAndView showOneCafe(@RequestParam(value = "nom", required = false) String nom,
-			HttpServletRequest request){
+			HttpServletRequest request,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'; "
+				+ "img-src 'self' 'unsafe-inline' http://maps.googleapis.com http://maps.google.com http://maps.gstatic.com http://csi.gstatic.com; script-src 'unsafe-inline' 'self' http://maps.google.com http://maps.googleapis.com; "
+				+ "style-src 'self' 'unsafe-inline' http://fonts.googleapis.com;");
 		ModelAndView mv = new ModelAndView("showOneCafe");
 		
 		if(nom != null){
@@ -211,7 +222,9 @@ public class CafeController {
 	@RequestMapping(value = "/addCom", method = RequestMethod.POST)
 	public String addCom(@RequestParam(value = "nom", required = false) String nom,
 			@RequestParam(value = "contenu", required = false) String contenu,
-			HttpServletRequest request){
+			HttpServletRequest request,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		if(contenu != null && nom !=null){
 			
 			//safe commentaire
@@ -242,7 +255,8 @@ public class CafeController {
 	}
 	
 	@RequestMapping(value = "/remplirCom", method = RequestMethod.GET)
-	public ModelAndView remplir(){
+	public ModelAndView remplir(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("homeCafe");
 		Commentaire com1 = new Commentaire();
 		

@@ -2,6 +2,8 @@ package com.dar.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,8 @@ public class CommentaireController {
 	private CommentaireService commentaireService;
 	
 	@RequestMapping("/home")
-	public ModelAndView home(){
+	public ModelAndView home(HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("createCommentaire");
 		List<Commentaire> map = commentaireService.listCommentaires();
 		mv.addObject("commentaireList", map);
@@ -27,7 +30,9 @@ public class CommentaireController {
 	}
 	
 	@RequestMapping("/saveCommentaire")
-	public ModelAndView save(@RequestParam(value = "contenu", required = false) String contenu){
+	public ModelAndView save(@RequestParam(value = "contenu", required = false) String contenu,
+			HttpServletResponse response){
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		ModelAndView mv = new ModelAndView("createCommentaire");
 			if(contenu != null){
 			Commentaire c = new Commentaire();

@@ -7,6 +7,8 @@ package com.dar.controller;
 //BC
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -27,8 +29,8 @@ public class EventController {
 
 
 	@RequestMapping(value = { "/", "/listEvents" })
-	public String listEvents(Map<String, Object> map) {
-
+	public String listEvents(Map<String, Object> map, HttpServletResponse response) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		map.put("event", new Event2());
 		map.put("event", eventService.listEvents());
 
@@ -36,8 +38,8 @@ public class EventController {
 	}
 
 	@RequestMapping("/get/{eventId}")
-	public String getEvent(@PathVariable Long eventId, Map<String, Object> map) {
-
+	public String getEvent(@PathVariable Long eventId, Map<String, Object> map, HttpServletResponse response) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		Event2 event = eventService.getEvent(eventId);
 
 		map.put("event", event);
@@ -47,8 +49,8 @@ public class EventController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String saveEvent(@ModelAttribute("event") Event2  event,
-			BindingResult result) {
-
+			BindingResult result, HttpServletResponse response) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		eventService.saveEvent(event);
 
 		/*
@@ -59,8 +61,8 @@ public class EventController {
 	}
 
 	@RequestMapping("/delete/{eventId}")
-	public String deleteEvent(@PathVariable("eventId") Long id) {
-
+	public String deleteEvent(@PathVariable("eventId") Long id, HttpServletResponse response) {
+		response.setHeader("Content-Security-Policy", "default-src 'self'");
 		eventService.deleteEvent(id);
 
 		/*
