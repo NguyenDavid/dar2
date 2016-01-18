@@ -31,6 +31,7 @@ import com.dar.model.User;
 import com.dar.service.CafeService;
 import com.dar.service.CommentaireService;
 import com.dar.service.UserService;
+import com.dar.utils.EnCryptAndDecrypt;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -205,6 +206,18 @@ public class CafeController {
 				+ "style-src 'self' 'unsafe-inline' http://fonts.googleapis.com;");
 		ModelAndView mv = new ModelAndView("showOneCafe");
 		
+		//token		
+		Long timestamp = System.currentTimeMillis();
+		System.out.println("avant : "+timestamp);
+		String timeString = String.valueOf(timestamp);
+		try {
+			timeString = EnCryptAndDecrypt.encrypt(timestamp.toString());
+			mv.addObject("antiForgeryToken", timeString);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(nom != null){
 			Cafe cafe = cafeService.getCafe(nom);
 			if(cafe != null){
@@ -222,35 +235,58 @@ public class CafeController {
 	@RequestMapping(value = "/addCom", method = RequestMethod.POST)
 	public String addCom(@RequestParam(value = "nom", required = false) String nom,
 			@RequestParam(value = "contenu", required = false) String contenu,
+			@RequestParam(value = "antiForgeryToken", required = false) String antiForgeryToken,
 			HttpServletRequest request,
 			HttpServletResponse response){
 		response.setHeader("Content-Security-Policy", "default-src 'self'");
-		if(contenu != null && nom !=null){
+		
+		//token		
+		String timeString;
+		try {
+			timeString = EnCryptAndDecrypt.decrypt(antiForgeryToken);
+			Long timestamp = Long.parseLong(timeString);
+			System.out.println("apres : "+timestamp);
+			Long now = System.currentTimeMillis();
+			System.out.println("now : "+now);
+			System.out.println("diff : "+(now-timestamp));
 			
-			//safe commentaire
-			contenu = EscapeUtils.escapeHtml(contenu);
-			
-			Commentaire c = new Commentaire();
-			c.setContenu(contenu);
-			c.setCafe(cafeService.getCafe(nom));
-			
-			Cookie[] cookies = request.getCookies();
-			User u=null;
-			for (Cookie cookie : cookies) {
-				if(cookie.getName().equals("idUser") && !cookie.getValue().equals("")){
-					u=userService.getUserById(Long.valueOf(cookie.getValue()));
-					break;
+			//the difference is short (< 1 minute)
+			//we suppose that the GET method was called just before the POST method
+			//so it may not be a CSRF attack
+			//we can write the commentary
+			if(now - timestamp < 60000){
+				if(contenu != null && nom !=null){
+					//safe commentary
+					contenu = EscapeUtils.escapeHtml(contenu);
+					
+					Commentaire c = new Commentaire();
+					c.setContenu(contenu);
+					c.setCafe(cafeService.getCafe(nom));
+					
+					Cookie[] cookies = request.getCookies();
+					User u=null;
+					for (Cookie cookie : cookies) {
+						if(cookie.getName().equals("idUser") && !cookie.getValue().equals("")){
+							u=userService.getUserById(Long.valueOf(cookie.getValue()));
+							break;
+						}
+					}
+					if(u!=null){
+						c.setOwner(u.getEmail());
+					}else{
+						c.setOwner("Some User");
+					}
+					
+					commentaireService.saveCommentaire(c);
+					return "redirect:/homeCafe";
 				}
 			}
-			if(u!=null){
-				c.setOwner(u.getEmail());
-			}else{
-				c.setOwner("Some User");
-			}
-			
-			commentaireService.saveCommentaire(c);
-			return "redirect:/homeCafe";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		//we don't write the commentary
 		return "homeCafe";
 	}
 	

@@ -141,6 +141,7 @@
 							<form:form modelAttribute="cafe" class="form-horizontal" action="addCom" method="post" accept-charset="ISO-8859-1">
 								<input type="text" name="contenu" size=100)/>
 								<input type="hidden" name="nom" value='${cafe.nom}'/>
+								<input type="hidden" name="antiForgeryToken" value="${antiForgeryToken}"/>
 								<br/>
 								<button type="submit" class="btn btn-lg btn-danger form-control">Ajouter commentaire</button>
 							</form:form>
